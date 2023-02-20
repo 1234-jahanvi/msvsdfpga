@@ -107,4 +107,4 @@ Here; we can see the Circuit-Statistics in the openfpgashell.log
 ## References:
 - [https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists)
 - [https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task](https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task)
-- [https://github.com/nandithaec/fpga_workshop_collaterals)](https://github.com/nandithaec/fpga_workshop_collaterals)
+- [https://github.com/nandithaec/fpga_workshop_collaterals](https://github.com/nandithaec/fpga_workshop_collaterals)
