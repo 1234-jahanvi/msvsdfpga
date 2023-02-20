@@ -82,4 +82,14 @@ Verilog netlists are generated in the following directory:
 {OPENFPGA_PATH}/openfpga_flow/tasks/benchmark_sweep/vtr_benchmarks/latest/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm/sv_chip0_hierarchy_no_mem/MIN_ROUTE_CHAN_WIDTH/SRC
 ```
 
-###
+### Checking the LUT-count
+
+Let's jump into the the directory with all the log files:
+
+```
+{OPENFPGA_PATH}/openfpga_flow/tasks/benchmark_sweep/vtr_benchmarks/latest/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm/sv_chip0_hierarchy_no_mem/MIN_ROUTE_CHAN_WIDTH
+```
+Here; we can see the Circuit-Statistics in the openfpgashell.log
+
+![k1](https://user-images.githubusercontent.com/56501917/220191249-a364e5dd-8425-43cb-9b54-89f0e1bd140a.png)
+
