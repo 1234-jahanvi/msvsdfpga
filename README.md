@@ -103,3 +103,8 @@ Here; we can see the Circuit-Statistics in the openfpgashell.log
 
 ![k1](https://user-images.githubusercontent.com/56501917/220191249-a364e5dd-8425-43cb-9b54-89f0e1bd140a.png)
 
+
+## References:
+- [[https://github.com/kunalg123/sky130CircuitDesignWorkshop](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists)]([https://github.com/kunalg123/sky130CircuitDesignWorkshop](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists))
+- [[https://www.vsdiat.com/](https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task)]([https://www.vsdiat.com/](https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task))
+- [[https://github.com/VrushabhDamle/sky130CircuitDesignWorkshop](https://github.com/nandithaec/fpga_workshop_collaterals)]([https://github.com/VrushabhDamle/sky130CircuitDesignWorkshop](https://github.com/nandithaec/fpga_workshop_collaterals))
