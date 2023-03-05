@@ -1,6 +1,6 @@
 # msvsdfpga
 
-## TASK-1: Generating an RTL supporting 10k LUT count using OpenFPGA
+## TASK-1: Generating an RTL supporting 1000+ LUT count using OpenFPGA
 
 OpenFPGA provides push-button scripts for users to run design flows. Users can customize their flow-run by crafting a task configuration file.
 
