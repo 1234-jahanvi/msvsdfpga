@@ -7,15 +7,15 @@ OpenFPGA provides push-button scripts for users to run design flows. Users can c
 ### Prepare the task configuration file
 
 In the task configuration file, you can specify the XML-based architecture files that describe the architecture of the FPGA fabric.
-Also, you can specify the openfpga shell script to be executed. Here, we are using an example script (vtr_benchmark_example_script.openfpga) which is golden reference to generate Verilog netlists using VTR-benchmarks. 
+Also, you can specify the openfpga shell script to be executed. Here, we are using an example script (example_script.openfpga) which is golden reference to generate Verilog netlists and their testbenches. 
 
-To enable the ability write the Verilog netlist for FPGA fabric after completion of the OpenFPGA flow, we add the below line the script (vtr_benchmark_example_script.openfpga):
+To enable the ability write the Verilog netlist for FPGA fabric after completion of the OpenFPGA flow, we add the below line the script (example_script.openfpga):
 
 ```
 write_fabric_verilog --file ${OPENFPGA_VERILOG_OUTPUT_DIR}/SRC --explicit_port_mapping --include_timing --print_user_defined_template --verbose
 ```
 
-Now, below is the task.conf file in the vtr_benchmarks where we specify the architecture file and the design (stereovision0.v).
+Now, below is the task.conf file in the yosys_vpr_template where we specify the architecture file and the design (rs_decoder.v).
 
 ```
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -29,42 +29,28 @@ Now, below is the task.conf file in the vtr_benchmarks where we specify the arch
 [GENERAL]
 run_engine=openfpga_shell
 power_tech_file = ${PATH:OPENFPGA_PATH}/openfpga_flow/tech/PTM_45nm/45nm.xml
-power_analysis = false
+power_analysis = true
 spice_output=false
 verilog_output=true
 timeout_each_job = 20*60
 fpga_flow=yosys_vpr
 
 [OpenFPGA_SHELL]
-openfpga_shell_template=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_shell_scripts/vtr_benchmark_example_script.openfpga
-openfpga_arch_file=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_arch/k6_frac_N10_adder_chain_dpram8K_dsp36_40nm_openfpga.xml
+openfpga_shell_template=${PATH:OPENFPGA_PATH}/OpenFPGA/openfpga_flow/tasks/template_tasks/yosys_vpr_template/example_script.openfpga
+openfpga_arch_file=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_arch/k6_frac_N10_40nm_openfpga.xml
 openfpga_sim_setting_file=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_simulation_settings/fixed_sim_openfpga.xml
-# VPR parameters
-# Use a fixed routing channel width to save runtime
-vpr_route_chan_width=300
-openfpga_vpr_pack_stats_file=vpr_pack_block_usage.txt
 
 [ARCHITECTURES]
-arch0=${PATH:OPENFPGA_PATH}/openfpga_flow/vpr_arch/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm.xml
+arch0=${PATH:OPENFPGA_PATH}/openfpga_flow/vpr_arch/k6_frac_N10_40nm.xml
 
 [BENCHMARKS]
-# Official benchmarks from VTR benchmark release
-bench0=${PATH:OPENFPGA_PATH}/openfpga_flow/benchmarks/vtr_benchmark/stereovision0.v
+bench0=${PATH:OPENFPGA_PATH}/openfpga_flow/benchmarks/quicklogic_tests/rs_decoder/rtl/rs_decoder.v
 
 [SYNTHESIS_PARAM]
-# Yosys script parameters
-bench_yosys_cell_sim_verilog_common=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_yosys_techlib/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm_cell_sim.v
-bench_yosys_bram_map_rules_common=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_yosys_techlib/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm_bram.txt
-bench_yosys_bram_map_verilog_common=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_yosys_techlib/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm_bram_map.v
-bench_yosys_dsp_map_verilog_common=${PATH:OPENFPGA_PATH}/openfpga_flow/openfpga_yosys_techlib/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm_dsp_map.v
-bench_yosys_dsp_map_parameters_common=-D DSP_A_MAXWIDTH=36 -D DSP_B_MAXWIDTH=36 -D DSP_A_MINWIDTH=2 -D DSP_B_MINWIDTH=2 -D DSP_NAME=mult_36x36
-bench_read_verilog_options_common = -nolatches
-bench_yosys_common=${PATH:OPENFPGA_PATH}/openfpga_flow/misc/ys_tmpl_yosys_vpr_bram_dsp_flow.ys
-# Benchmark ch_intrinsics
-bench0_top = sv_chip0_hierarchy_no_mem
+bench0_top = rs_decoder_top
 
 [SCRIPT_PARAM_MIN_ROUTE_CHAN_WIDTH]
-# end_flow_with_test=
+end_flow_with_test=
 # vpr_fpga_verilog_formal_verification_top_netlist=
 
 ```
@@ -74,17 +60,17 @@ bench0_top = sv_chip0_hierarchy_no_mem
 After finalizing your configuration file, you can run the task by calling the python script with the given path to task configuration file:
 
 ```
-python3 openfpga_flow/scripts/run_fpga_task.py openfpga_flow/tasks/benchmark_sweep/vtr_benchmarks
+python3 openfpga_flow/scripts/run_fpga_task.py openfpga_flow/tasks/template_tasks/yosys_vpr_template
 ```
 Verilog netlists are generated in the following directory:
 
 ```
-{OPENFPGA_PATH}/openfpga_flow/tasks/benchmark_sweep/vtr_benchmarks/latest/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm/sv_chip0_hierarchy_no_mem/MIN_ROUTE_CHAN_WIDTH/SRC
+{OPENFPGA_PATH}/openfpga_flow/tasks/template_tasks/yosys_vpr_template/latest/k6_frac_N10_40nm/rs_decoder_top/MIN_ROUTE_CHAN_WIDTH
 ```
 
 Below is the final fabric netlists generated in the above path:
 
-![k2](https://user-images.githubusercontent.com/56501917/220191537-0163cb1b-9fd4-46ee-a5e5-fb0f587d722d.png)
+![kunal_netlists](https://user-images.githubusercontent.com/56501917/222959020-71151ff0-6928-409d-b525-dd03beba8c4c.png)
 
 And below is the hierarchy of the verilog netlists modelling our FPGA fabric:
 
@@ -101,8 +87,7 @@ Let's jump into the the directory with all the log files:
 ```
 Here; we can see the Circuit-Statistics in the openfpgashell.log
 
-![k1](https://user-images.githubusercontent.com/56501917/220191249-a364e5dd-8425-43cb-9b54-89f0e1bd140a.png)
-
+![kunal_stats](https://user-images.githubusercontent.com/56501917/222959057-79b068ca-026b-468c-aa40-e7ceb8691b5f.png)
 
 ## References:
 - [https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists)
