@@ -89,6 +89,70 @@ Here; we can see the Circuit-Statistics in the openfpgashell.log
 
 ![kunal_stats](https://user-images.githubusercontent.com/56501917/222959057-79b068ca-026b-468c-aa40-e7ceb8691b5f.png)
 
+## Testbench and Simulation:
+
+In the example_script.openfpga, we had to included the command which automatically generates the testbench for our design as an FPGA fabric. The command:
+
+```
+write_full_testbench --file ./SRC --reference_benchmark_file_path ${REFERENCE_VERILOG_TESTBENCH} --include_signal_init --bitstream fabric_bitstream.bit 
+```
+This generates rs_decoder_top_autocheck_top_tb.v which we can now simulate in Vivado.
+
+The following changes were made for a successful simulation:
+
+1. Change ```default_nettype none``` to ```default_nettype wire``` in all the files in the SRC folder
+
+2. In the rs_decoder_top_autocheck_top_tb.v, the reference benchmark instanciation should be changed as follows because we need to match the number of signals in the top module of the design (rs_decoder_top) with that of this instanciated module.
+
+```
+wire [4:0] x_input;
+wire [4:0] k_input;
+wire [4:0] error_benchmark;
+assign x_input = {x_4__shared_input, x_3__shared_input, x_2__shared_input, x_1__shared_input, x_0__shared_input};
+assign k_input = {k_4__shared_input, k_3__shared_input, k_2__shared_input, k_1__shared_input, k_0__shared_input};
+assign error_benchmark = {error_4__benchmark, error_3__benchmark, error_2__benchmark, error_1__benchmark, error_0__benchmark};
+
+	rs_decoder_top REF_DUT(
+		x_input,
+		error_benchmark,
+		with_error_benchmark,
+		enable_shared_input,
+		valid_benchmark,
+		k_input,
+		clk,
+		clrn_shared_input
+	);
+```
+
+3. Since $deposit was throwing an error: Undefined System Task, we change all the $deposit statements as assign statements along with removing the initial block around that statements.
+
+For example, earlier it was:
+
+```
+// ------ BEGIN driver initialization -----
+initial begin
+  $deposit(FPGA_DUT.grid_clb_1__1_.logical_tile_clb_mode_clb__0.logical_tile_clb_mode_default__fle_0.logical_tile_clb_mode_default__fle_mode_physical__fabric_0.logical_tile_clb_mode_default__fle_mode_physical__fabric_mode_default__frac_logic_0.logical_tile_clb_mode_default__fle_mode_physical__fabric_mode_default__frac_logic_mode_default__frac_lut6_0.frac_lut6_0_.frac_lut6_mux_0_.mux_l1_in_0_.TGATE_0_.in, $random % 2 ? 1'b1 : 1'b0);
+end	
+// ------ END driver initialization -----
+```
+
+This got changed to:
+
+```
+// ------ BEGIN driver initialization -----
+	
+		assign FPGA_DUT.grid_clb_1__1_.logical_tile_clb_mode_clb__0.logical_tile_clb_mode_default__fle_0.logical_tile_clb_mode_default__fle_mode_physical__fabric_0.logical_tile_clb_mode_default__fle_mode_physical__fabric_mode_default__frac_logic_0.logical_tile_clb_mode_default__fle_mode_physical__fabric_mode_default__frac_logic_mode_default__frac_lut6_0.frac_lut6_0_.frac_lut6_mux_0_.mux_l1_in_0_.TGATE_0_.in= $random % 2 ? 1'b1 : 1'b0;
+	
+// ------ END driver initialization -----
+```
+
+
+### Simulation screenshot:
+
+![kunal_ss](https://user-images.githubusercontent.com/56501917/222982755-32df4797-d899-4797-aef8-d2dae7188f73.png)
+
+
+
 ## References:
 - [https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists)
 - [https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task](https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task)
