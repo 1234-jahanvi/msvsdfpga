@@ -83,7 +83,7 @@ And below is the hierarchy of the verilog netlists modelling our FPGA fabric:
 Let's jump into the the directory with all the log files:
 
 ```
-{OPENFPGA_PATH}/openfpga_flow/tasks/benchmark_sweep/vtr_benchmarks/latest/k6_frac_N10_tileable_adder_chain_dpram8K_dsp36_40nm/sv_chip0_hierarchy_no_mem/MIN_ROUTE_CHAN_WIDTH
+{OPENFPGA_PATH}/openfpga_flow/tasks/template_tasks/yosys_vpr_template/latest/k6_frac_N10_40nm/rs_decoder_top/MIN_ROUTE_CHAN_WIDTH
 ```
 Here; we can see the Circuit-Statistics in the openfpgashell.log
 
