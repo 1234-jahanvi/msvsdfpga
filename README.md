@@ -152,7 +152,7 @@ This got changed to:
 ![kunal_ss](https://user-images.githubusercontent.com/56501917/222982755-32df4797-d899-4797-aef8-d2dae7188f73.png)
 
 
-# TASK-2: Generating an RTL supporting 1000+ LUT count using GENUS FLOW
+# TASK-2: Synthesis and Gate-level simulation using GENUS FLOW
 
 With the FPGA netlists generated from the TASK-1 flow, we use these to run the GENUS flow.
 
