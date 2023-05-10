@@ -1,6 +1,6 @@
 # msvsdfpga
 
-## TASK-1: Generating an RTL supporting 1000+ LUT count using OpenFPGA
+# TASK-1: Generating an RTL supporting 1000+ LUT count using OpenFPGA
 
 OpenFPGA provides push-button scripts for users to run design flows. Users can customize their flow-run by crafting a task configuration file.
 
@@ -152,8 +152,104 @@ This got changed to:
 ![kunal_ss](https://user-images.githubusercontent.com/56501917/222982755-32df4797-d899-4797-aef8-d2dae7188f73.png)
 
 
+# TASK-2: Generating an RTL supporting 1000+ LUT count using GENUS FLOW
 
-## References:
+With the FPGA netlists generated from the TASK-1 flow, we use these to run the GENUS flow.
+
+## Writing the genus TCL script
+
+The attribute variables pointing to the SCL libraries and the folder containing all the SRC files is set as init_hdl_search_path where read_hdl command will read the top-module files.
+Then, from the hierarchy of the verilog netlists modelling our FPGA fabric mentioned previously, we know that fpga_top.v is the top-module verilog file and then fabric_netlists.v and fpga_defines.v which have include statements to the sub-module verilog files (in the directories lb, sub-module and routing) are the main files used by our top-module.
+
+```
+#Step1: Set library paths
+#rm designs/*
+set_attr init_lib_search_path /home/jahanvi1/Documents/jahanvi/scl_pdk_v2/stdlib/fs120/liberty/lib_flow_ff/
+set_attr init_hdl_search_path /home/jahanvi1/genus_flow_2/SRC/
+set_attr library tsl18fs120_scl_ff.lib 
+
+read_hdl {./SRC/fpga_defines.v ./SRC/fabric_netlists.v ./SRC/fpga_top.v}
+
+#Step 3: Elaborate/connect all modules
+elaborate fpga_top
+
+#gui_show 
+
+#Step 4: Synthesise the  design to generic gates and set the effort level
+set_attr syn_generic_effort high
+syn_generic
+
+#syn_map: Maps  the  design  to  the  cells  described in the supplied technology library and performs logic optimization.
+syn_map
+
+#Step 5: Report results before optimisation
+report_power > power.txt
+report_gates 
+
+
+#Step 6: Optimise and run synthesis- key step
+#Performs  gate  level  optimization to improve timing on critical paths
+set_attr syn_opt_effort high
+
+#Step 7: Report results after optimisation
+report_gates 
+report_power > power.txt
+
+#Step 8 Check design for timing errors
+check_design > design_check.txt
+
+#Step 9: Write out synthesised netlist and constraints- important output
+write_hdl > hdl_synthesis.v
+write_sdc > ./reports/area_opt/counter_sdc.sdc  
+
+#Step 10: Report final results
+report_gates 
+report_area > area.txt
+report_power > power.txt
+report_timing > timing.txt
+```
+
+## Running the above TCL script in GENUS LEGACY-UI
+
+Step-1: Source the Cadence tools in your local machine
+
+<img width="280" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/d239ed95-03b3-4a22-9da2-dc1e29d81d5f">
+
+Step-2: cd into the folder containing your script and then open GENUS LEGACY shell to run the script
+
+```
+genus -legacy_ui
+
+legacy_genus:/> source script.tcl
+```
+
+The flow has successfully ended.
+
+<img width="550" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/9b03cab7-8a0d-47f7-8156-f6921ed0a33d">
+
+This generates timing.txt, power.txt, area.txt, genus log files and most importantly hdl_synthesis.v (which is our final synthesized netlist generated from the GENUS LEGACY flow).
+
+## Simulations using VIVADO
+
+### SOURCE FILES:
+
+The flow-chart below shows the hierarchy of how the files are imported in VIVADO:
+
+<img width="513" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/47cedc3c-be4d-4d1f-8fe1-7d67476adbd9">
+
+Now; for the testbench, we use the testbench (generated automatically from the OpenFPGA flow) used in the TASK-1 simulation.
+
+<img width="328" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/e8ae2868-d7d1-4f09-9a4d-2996992891a3">
+
+Now, we run simulation:
+
+<img width="959" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/150a0a36-ed5a-4b7f-bc5a-edbbb722704a">
+
+### FUTURE-WORK:
+- Perform correct gate-level simulation for Sythesized Verilog Netlist generated from the Genus flow.
+- Match the testbench format with the verilog files generated from Genus flow.
+- 
+### References:
 - [https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists)
 - [https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task](https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task)
 - [https://github.com/nandithaec/fpga_workshop_collaterals](https://github.com/nandithaec/fpga_workshop_collaterals)
