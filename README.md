@@ -248,7 +248,8 @@ Now, we run simulation:
 ### FUTURE-WORK:
 - Perform correct gate-level simulation for Sythesized Verilog Netlist generated from the Genus flow.
 - Match the testbench format with the verilog files generated from Genus flow.
-- 
+
+
 ### References:
 - [https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists](https://openfpga.readthedocs.io/en/master/manual/fpga_verilog/fabric_netlist/#top-level-netlists)
 - [https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task](https://openfpga.readthedocs.io/en/master/tutorials/design_flow/generate_fabric/#run-openfpga-task)
