@@ -211,11 +211,11 @@ report_timing > timing.txt
 
 ## Running the above TCL script in GENUS LEGACY-UI
 
-Step-1: Source the Cadence tools in your local machine
+Step-1: Source the Cadence tools in your local machine and then cd into the folder containing your script. Open GENUS LEGACY shell to run the script.
 
-<img width="280" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/d239ed95-03b3-4a22-9da2-dc1e29d81d5f">
+<img width="379" alt="csh" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/859f064a-3173-4280-9947-667997e30505">
 
-Step-2: cd into the folder containing your script and then open GENUS LEGACY shell to run the script
+Now; in the genus legacy shell run the source script.
 
 ```
 genus -legacy_ui
@@ -225,7 +225,7 @@ legacy_genus:/> source script.tcl
 
 The flow has successfully ended.
 
-<img width="550" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/9b03cab7-8a0d-47f7-8156-f6921ed0a33d">
+<img width="517" alt="Screenshot 2023-05-12 231735" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/721110c0-ebb8-4e1f-ae82-cbcd2cb3d355">
 
 This generates timing.txt, power.txt, area.txt, genus log files and most importantly hdl_synthesis.v (which is our final synthesized netlist generated from the GENUS LEGACY flow).
 
@@ -235,15 +235,16 @@ This generates timing.txt, power.txt, area.txt, genus log files and most importa
 
 The flow-chart below shows the hierarchy of how the files are imported in VIVADO:
 
-<img width="513" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/47cedc3c-be4d-4d1f-8fe1-7d67476adbd9">
+![flow-1](https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/5359b570-b3b6-4a43-a9f1-b3b3152fecde)
 
 Now; for the testbench, we use the testbench (generated automatically from the OpenFPGA flow) used in the TASK-1 simulation.
 
-<img width="328" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/e8ae2868-d7d1-4f09-9a4d-2996992891a3">
+![flow-2](https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/6115bca9-c50d-4349-9ca7-68dde117e3a1)
+
 
 Now, we run simulation:
 
-<img width="959" alt="image" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/150a0a36-ed5a-4b7f-bc5a-edbbb722704a">
+<img width="517" alt="flow" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/39dd5868-bc56-4bc5-bdfc-0876d31e35eb">
 
 ### FUTURE-WORK:
 - Perform correct gate-level simulation for Sythesized Verilog Netlist generated from the Genus flow.
