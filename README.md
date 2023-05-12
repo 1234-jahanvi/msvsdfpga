@@ -244,7 +244,8 @@ Now for the testbench, we use the testbench (generated automatically from the Op
 
 Now, we run simulation:
 
-<img width="517" alt="flow" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/39dd5868-bc56-4bc5-bdfc-0876d31e35eb">
+<img width="959" alt="simulation" src="https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/07c0290d-bf63-46ef-ba3b-fa9c19147ebd">
+
 
 ### FUTURE-WORK:
 - Perform correct gate-level simulation for Sythesized Verilog Netlist generated from the Genus flow.
