@@ -237,7 +237,7 @@ The flow-chart below shows the hierarchy of how the files are imported in VIVADO
 
 ![flow-1](https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/5359b570-b3b6-4a43-a9f1-b3b3152fecde)
 
-Now; for the testbench, we use the testbench (generated automatically from the OpenFPGA flow) used in the TASK-1 simulation.
+Now for the testbench, we use the testbench (generated automatically from the OpenFPGA flow) used in the TASK-1 simulation.
 
 ![flow-2](https://github.com/1234-jahanvi/msvsdfpga/assets/56501917/6115bca9-c50d-4349-9ca7-68dde117e3a1)
 
